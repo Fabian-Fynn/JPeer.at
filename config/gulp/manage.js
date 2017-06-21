@@ -1,11 +1,11 @@
 module.exports = options => {
-    const gulp    = options.gulp;
-    const paths   = options.paths;
+    const gulp = options.gulp;
+    const paths = options.paths;
     const plugins = options.plugins;
-    const path    = require('path');
-    const glob    = require('glob');
-    const merge   = require('merge-stream');
-    const autoprefixer   = require('autoprefixer');
+    const path = require('path');
+    const glob = require('glob');
+    const merge = require('merge-stream');
+    const autoprefixer = require('autoprefixer');
     const mainBowerFiles = require('main-bower-files');
     const postcssProcessors = [
         autoprefixer()
@@ -51,9 +51,9 @@ module.exports = options => {
         },
         'css:vendor': () => {
             return gulp.src(gulp.util._.flatten([
-                    gulp.data.get('paths.vendor.css'),
-                    gulp.data.get('paths.dev.folder.assets.css') + '/global.css'
-                ]))
+                gulp.data.get('paths.vendor.css'),
+                gulp.data.get('paths.dev.folder.assets.css') + '/global.css'
+            ]))
                 .pipe(plugins.concat('global.css'))
                 .pipe(gulp.dest(gulp.data.get('paths.dev.folder.assets.css')));
         },
@@ -74,6 +74,10 @@ module.exports = options => {
                 .pipe(plugins.sourcemaps.write(gulp.data.get('paths.base')))
                 .pipe(gulp.dest(gulp.data.get('paths.dev.folder.assets.js')));
         },
+        'js:sw': () => {
+            return gulp.src('src/sw.js')
+                .pipe(gulp.dest('dev/'));
+        },
         'js:vendor': () => {
             let bowerFiles;
 
@@ -85,11 +89,11 @@ module.exports = options => {
             }
 
             return gulp.src(gulp.util._.flatten([
-                    gulp.data.get('paths.src.files.couldBeVendor.js'),
-                    gulp.data.get('paths.vendor.js'),
-                    gulp.data.get('paths.src.ignore.min'),
-                    bowerFiles
-                ]))
+                gulp.data.get('paths.src.files.couldBeVendor.js'),
+                gulp.data.get('paths.vendor.js'),
+                gulp.data.get('paths.src.ignore.min'),
+                bowerFiles
+            ]))
                 .pipe(plugins.filter('**/*.js'))
                 .pipe(plugins.sourcemaps.init())
                 .pipe(plugins.concat('vendor.js'))

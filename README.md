@@ -2,6 +2,13 @@
 
 This page is entirely made with AngularJS. Why a framework for such a small application? Well, it is fun to play around with different frameworks, so here I decided to make my page with AngularJS.
 
+## Service Worker
+
+I couldn't see any performance improvements. It's offline available though.
+![without ServiceWorker](without-sw.png)
+
+![without ServiceWorker](with-sw.png)
+
 ## Usage
 
 > Note: make sure you have installed Node 4+ and npm 3+ installed. [More info](https://nodejs.org/)

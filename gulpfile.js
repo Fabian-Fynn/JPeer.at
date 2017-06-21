@@ -6,11 +6,11 @@
 /*************
  ** MODULES **
  *************/
-const _       = require('lodash');
-const gulp    = require('gulp');
-const grunt   = require('grunt');
-const merge   = require('merge-stream');
-const paths   = require('./config/paths.json');
+const _ = require('lodash');
+const gulp = require('gulp');
+const grunt = require('grunt');
+const merge = require('merge-stream');
+const paths = require('./config/paths.json');
 const plugins = require('gulp-load-plugins')();
 const deleteEmpty = require('delete-empty');
 const browserSync = require('browser-sync').create();
@@ -24,14 +24,14 @@ const browserSync = require('browser-sync').create();
  * @return {Stream}
  */
 const getTask = (mainTask, subTask) => {
-    const task = require('./config/gulp/' + mainTask)({gulp, plugins, paths});
+    const task = require('./config/gulp/' + mainTask)({ gulp, plugins, paths });
 
     return task[subTask];
 };
 
-gulp.util   = require('gulp-util');
+gulp.util = require('gulp-util');
 gulp.util._ = _;
-gulp.data   = grunt.config;
+gulp.data = grunt.config;
 gulp.data.init(paths);
 
 /***********
@@ -43,19 +43,20 @@ gulp.task('default', ['build:prod']);
 // ---------
 gulp.task('clean', () => {
     return gulp.src(_.flatten([
-            gulp.data.get('paths.dev.base'),
-            gulp.data.get('paths.dest.base'),
-            gulp.data.get('paths.reports.base'),
-            './coverage'
-        ]))
+        gulp.data.get('paths.dev.base'),
+        gulp.data.get('paths.dest.base'),
+        gulp.data.get('paths.reports.base'),
+        './coverage'
+    ]))
         .pipe(plugins.clean());
 });
 
 // 1. Managing
 // -----------
-gulp.task('manage', ['manage:css', 'manage:html', 'manage:js:vendor', 'manage:js:app', 'manage:js']);
+gulp.task('manage', ['manage:css', 'manage:html', 'manage:js:vendor', 'manage:js:app', 'manage:js:sw', 'manage:js']);
 gulp.task('manage:js', ['manage:js:own', 'manage:js:app', 'manage:js:vendor']);
 gulp.task('manage:js:own', getTask('manage', 'js:own'));
+gulp.task('manage:js:sw', getTask('manage', 'js:sw'));
 gulp.task('manage:js:app', getTask('manage', 'js:app'));
 gulp.task('manage:js:vendor', getTask('manage', 'js:vendor'));
 gulp.task('manage:sass', ['manage:sass:browser'], getTask('manage', 'sass'));
@@ -123,7 +124,7 @@ gulp.task('build:prod:unsafe', () => {
         gulp.start('minify', () => {
             // cannot add stream directly here,
             // cause the stream will not emit correctly
-            gulp.start('build:prod:helper', () => {});
+            gulp.start('build:prod:helper', () => { });
         });
     });
 });
@@ -132,9 +133,9 @@ gulp.task('build:prod:helper', () => {
     let stream = merge();
     // first stream to copy everything but html, js and scss
     stream.add(gulp.src(_.flatten([
-            gulp.data.get('paths.src.copy'),
-            gulp.data.get('paths.src.ignore.html')
-        ]))
+        gulp.data.get('paths.src.copy'),
+        gulp.data.get('paths.src.ignore.html')
+    ]))
         .pipe(gulp.dest(gulp.data.get('paths.dest.base'))));
 
     // clean dev dir - optional
